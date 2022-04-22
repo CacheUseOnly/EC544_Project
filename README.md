@@ -11,7 +11,7 @@ Rotate clockwise
 select motor 6
 Rotate counter-clockwise
 ```
-## Set up
+## Server Set Up
 
 1. In order to use the GPIO ports your user must be a member of the gpio group. The `pi` user is a member by default, other users need to be added manually. To check your user, use `whoami`
     - `$ sudo usermod -a -G gpio <username>`
@@ -20,6 +20,13 @@ Rotate counter-clockwise
 3. Run the program
     - default arguments: `$ make run`
     - custom port: `$ sudo ./main <port number>`
+
+## Client Set Up
+
+1. Build the program
+    - `$ make`
+2. Run the program
+    - `$ make run`
 
 ## Remote Syntax
 
