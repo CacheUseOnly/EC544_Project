@@ -1,0 +1,5 @@
+# link and compile files
+*.o
+
+# bins
+main
