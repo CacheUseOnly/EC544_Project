@@ -1,10 +1,10 @@
 CC := gcc
-CFLAG := -Wall -lwiringPi
+CFLAG := -Wall -lwiringPi -pthread
 
-controller: controller.c
+controller.o: controller.c
 	$(CC) $^ -c
 
-server: server.c
+server.o: server.c
 	$(CC) $^ -c
 
 main: main.c server.o controller.o

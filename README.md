@@ -2,14 +2,34 @@
 
 *need a better title for this readme*
 
-Running examples
+Client example
 ```
->>> CW-3
+./controller 44-2 67-1 48-5 91-2
+44-2
+67-1
+48-5
+91-2
+disconnect
+```
+
+Server example
+```
+> make run
+sudo ./main 54400
+>>> 44-2
+select motor 2
+set position to 44
+>>> 67-1
+select motor 1
+set position to 67
+>>> 48-5
+select motor 5
+set position to 48
+>>> 91-3
 select motor 3
-Rotate clockwise
->>> CC-6
-select motor 6
-Rotate counter-clockwise
+set position to 91
+>>> disconnect
+disconnect...
 ```
 ## Server Set Up
 
@@ -31,12 +51,12 @@ Rotate counter-clockwise
 ## Remote Syntax
 
 - `shutdown`: shuts down this program
-- "`operateMode`-`motorNum`"
-    - `operateMode`: `CC`(counter-clockwise) or `CW`(clockwise)
+- "`position`-`motorNum`"
+    - `postition`: 0 - 99
     - `motorNum`: 1 to 6
     - examples 
-        - `CC-3`
-        - `CW-6`
+        - `24-3`
+        - `79-6`
 
 ## Pin Out
 
@@ -56,5 +76,4 @@ Rotate counter-clockwise
 |GPIO 5|GPIO 6|Operation|
 |----|----|----|
 |x|0|NOP|
-|0|1|Clockwise rotation|
-|1|1|counter-clockwise rotation|
+|`value`|1|set motor position|

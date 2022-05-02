@@ -9,14 +9,14 @@
  *
  * 5    6   operation
  * x    0   NOP
- * 0    1   clockwise rotation (cw)
- * 1    1   counter-clockwise  (cc)
+ * val  1   set position to val
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <wiringPi.h>
+#include <softPwm.h>
 
 #define P1 17
 #define P2 27
@@ -24,13 +24,7 @@
 #define P4 5
 #define P5 6
 
-typedef enum _mode {
-    NOP,
-    CW,
-    CC,
-} operate_mode;
-
 void init();
 int selectMotor(int motor);
-int operate(operate_mode mode);
+int operate(int pos);
 int handleInput(char* input);

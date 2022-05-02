@@ -38,14 +38,13 @@ int main(int argc, char* argv[]) {
                 close(new_sockfd);
                 exit(EXIT_SUCCESS);
             }
-            printf(">>> %s", buffer);
+            printf(">>> %s\n", buffer);
 
-            // shutdown if request is "shutdown"
-            if (strncmp("shutdown", buffer, 8) == 0) {
-                printf("Shutting down...\n");
+            // disconnect if request is "disconnect"
+            if (strncmp("disconnect", buffer, 10) == 0) {
+                printf("disconnect...\n");
                 close(new_sockfd);
-                close(socket);
-                return 0;
+                break;
             }
 
             // handle request

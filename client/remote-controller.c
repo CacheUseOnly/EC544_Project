@@ -14,7 +14,7 @@
         exit(EXIT_FAILURE); \
     }
 
-int main() {
+int main(int argc, char** argv) {
     int sockfd;
     struct sockaddr_in addr;
 
@@ -26,13 +26,24 @@ int main() {
 
     char send_buf[BUFFER_SIZE];
     char recv_buf[BUFFER_SIZE];
-    while (1) {
-        fgets(send_buf, BUFFER_SIZE, stdin);
+    char* disconnect = "disconnect";
+    for (int i = 1; i < argc; ++i) {
+        printf("%s\n", argv[i]);
+        strncpy(send_buf, argv[i], strlen(argv[i]));
         send(sockfd, send_buf, strlen(send_buf), 0);
         read(sockfd, recv_buf, 1024);
         if (strncmp(send_buf, recv_buf, strlen(send_buf)) != 0) {
             perror("don't match\n");
         }
+    }
+
+    // disconnect from server
+    strncpy(send_buf, disconnect, strlen(disconnect));
+    printf("%s\n", send_buf);
+    send(sockfd, send_buf, strlen(send_buf), 0);
+    read(sockfd, recv_buf, 1024);
+    if (strncmp(send_buf, recv_buf, strlen(send_buf)) != 0) {
+        perror("don't match\n");
     }
 
     return 0;

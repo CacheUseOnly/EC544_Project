@@ -2,7 +2,7 @@
 
 /* init wiringPi */
 void init() {
-    wiringPiSetup();
+    wiringPiSetupGpio();
 
     // init motor selection pins
     pinMode(P1, OUTPUT);
@@ -10,7 +10,7 @@ void init() {
     pinMode(P3, OUTPUT);
 
     // init operation pins
-    pinMode(P4, OUTPUT);
+    softPwmCreate(P4, 50, 100);
     pinMode(P5, OUTPUT);
 }
 
@@ -61,37 +61,21 @@ int selectMotor(int motor) {
     return 0;
 }
 
-int operate(operate_mode mode) {
-    switch (mode) {
-        case NOP:
-            printf("NOP\n");
-            digitalWrite(P4, LOW);
-            digitalWrite(P5, LOW);
-            break;
-        case CW:
-            printf("Rotate clockwise\n");
-            digitalWrite(P4, LOW);
-            digitalWrite(P5, HIGH);
-            digitalWrite(P5, LOW);  // activate
-            break;
-        case CC:
-            printf("Rotate counter-clockwise\n");
-            digitalWrite(P4, HIGH);
-            digitalWrite(P5, HIGH);
-            digitalWrite(P5, LOW);  // activate
-            break;
-        default:
-            perror("invalid mode\n");
-            return -1;
-    }
+int operate(int pos) {
+    printf("set position to %d\n", pos);
+    softPwmWrite(P4, pos);
+
+    // activate
+    digitalWrite(P5, HIGH);
+    digitalWrite(P5, LOW);
 
     return 0;
 }
 
 int handleInput(char* input) {
     int motor;
-    char* mode;
-    operate_mode op_mode;
+    char* temp;
+    int pos;
 
     motor = input[3] - '0';
     if (motor < 1 || motor > 6) {
@@ -99,18 +83,15 @@ int handleInput(char* input) {
         return -1;
     }
 
-    mode = strtok(input, "-");
-    if (strncmp("CC", mode, 2) == 0) {
-        op_mode = CC;
-    } else if (strncmp("CW", mode, 2) == 0) {
-        op_mode = CW;
-    } else {
-        perror("operation mode\n");
+    temp = strtok(input, "-");
+    pos = atoi(temp);
+    if (pos < 0 || pos > 100) {
+        perror("position\n");
         return -1;
     }
 
     selectMotor(motor);
-    operate(op_mode);
+    operate(pos);
 
     return 0;
 }
